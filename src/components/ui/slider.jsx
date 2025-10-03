@@ -20,7 +20,7 @@ function Slider({
   min = 0,
   max = 100,
   onValueChange = () => {},
-  onChangeValue = () => {}, // NEW: send value to parent on drag
+  onChangeValue = () => {},
   ...props
 }) {
   const _values = React.useMemo(
@@ -34,6 +34,7 @@ function Slider({
   );
 
   const [activeIndex, setActiveIndex] = React.useState(null);
+  const [isDragging, setIsDragging] = React.useState(false);
 
   return (
     <SliderPrimitive.Root
@@ -43,7 +44,7 @@ function Slider({
       max={max}
       onValueChange={(vals) => {
         onValueChange(vals);
-        onChangeValue(vals); // send values to parent
+        onChangeValue(vals);
       }}
       className={cn(
         "relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50",
@@ -71,12 +72,17 @@ function Slider({
             "border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow]",
             thumbClassName
           )}
+          style={{ cursor: isDragging ? "grabbing" : "grab" }} // cursor change
           onMouseEnter={() => setActiveIndex(index)}
           onMouseLeave={() => setActiveIndex(null)}
           onFocus={() => setActiveIndex(index)}
           onBlur={() => setActiveIndex(null)}
-          onPointerDown={() => setActiveIndex(index)}
-          onPointerUp={() => setActiveIndex(null)}
+          onPointerDown={() => {
+            setActiveIndex(index);
+            setIsDragging(true); // start dragging
+          }}
+          onPointerUp={() => setIsDragging(false)} // stop dragging
+          onPointerCancel={() => setIsDragging(false)} // safety
         >
           {/* Tooltip */}
           {showTooltip && !showValueOutside && activeIndex === index && (
