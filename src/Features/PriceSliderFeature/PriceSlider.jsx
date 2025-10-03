@@ -15,9 +15,10 @@ function PriceSlider({
   tooltipClassName = "bg-black text-white px-2 py-1 rounded text-xs", // Tooltip container class
   tooltipTextClassName = "font-medium", // Tooltip text class
   tooltipStyle = {}, // Inline tooltip style
-  tooltipArrow = true, // Show arrow under tooltip
+  tooltipArrow = false, // Show arrow under tooltip
   tooltipArrowClassName = "bg-black", // Tooltip arrow color class
-  showValueOutside = false, // Show values outside slider
+  showValueOutside = true, // Show values outside slider
+  direction="rtl",
   valueOutsideClassName = "text-gray-800 font-medium text-xs", // Outside value class
 }) {
   // Internal state to control slider if parent doesn't provide value
@@ -35,6 +36,7 @@ function PriceSlider({
       min={min}
       max={max}
       step={step}
+      direction={direction}
       className={className}
       trackClassName={trackClassName}
       rangeClassName={rangeClassName}

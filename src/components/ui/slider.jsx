@@ -19,6 +19,7 @@ function Slider({
   defaultValue = [0, 100],
   min = 0,
   max = 100,
+  direction = "rtl",
   onValueChange = () => {},
   onChangeValue = () => {},
   ...props
@@ -50,6 +51,7 @@ function Slider({
         "relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50",
         className
       )}
+      dir={direction} // ← نطبق اتجاه اللغة
       {...props}
     >
       {/* Track */}
@@ -72,17 +74,17 @@ function Slider({
             "border-primary bg-background ring-ring/50 block size-4 shrink-0 rounded-full border shadow-sm transition-[color,box-shadow]",
             thumbClassName
           )}
-          style={{ cursor: isDragging ? "grabbing" : "grab" }} // cursor change
+          style={{ cursor: isDragging ? "grabbing" : "grab" }}
           onMouseEnter={() => setActiveIndex(index)}
           onMouseLeave={() => setActiveIndex(null)}
           onFocus={() => setActiveIndex(index)}
           onBlur={() => setActiveIndex(null)}
           onPointerDown={() => {
             setActiveIndex(index);
-            setIsDragging(true); // start dragging
+            setIsDragging(true);
           }}
-          onPointerUp={() => setIsDragging(false)} // stop dragging
-          onPointerCancel={() => setIsDragging(false)} // safety
+          onPointerUp={() => setIsDragging(false)}
+          onPointerCancel={() => setIsDragging(false)}
         >
           {/* Tooltip */}
           {showTooltip && !showValueOutside && activeIndex === index && (
@@ -112,7 +114,9 @@ function Slider({
         <>
           <div
             className={cn(
-              "absolute -top-6 left-0 text-xs font-medium text-gray-800",
+              `absolute -top-6 ${
+                direction === "rtl" ? "right-0" : "left-0"
+              } text-xs font-medium text-gray-800`,
               valueOutsideClassName
             )}
           >
@@ -120,7 +124,9 @@ function Slider({
           </div>
           <div
             className={cn(
-              "absolute -top-6 right-0 text-xs font-medium text-gray-800",
+              `absolute -top-6 ${
+                direction === "rtl" ? "left-0" : "right-0"
+              } text-xs font-medium text-gray-800`,
               valueOutsideClassName
             )}
           >
